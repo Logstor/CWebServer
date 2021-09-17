@@ -39,7 +39,8 @@ int main(int argc, char** argv)
     // Parse arguments
     for(int i=1; i < argc; ++i)
     {
-        if (!strcmp("--port", argv[i])) { port = atoi(argv[i]); }
+        if (!strcmp("--port", argv[i])) 
+            port = atoi(argv[i]);
 
         else { std::cout << "Unknown Parameter: " << argv[i] << std::endl; }
     }
