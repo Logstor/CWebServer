@@ -4,6 +4,7 @@
 #include <string.h>
 #include <cstdlib>
 #include <restbed>
+#include <sstream>
 
 #include "ServerLogger.hpp"
 
@@ -13,9 +14,21 @@ constexpr ushort DEFAULTPORT = 5073;
 
 std::string defaultAnswer = "Hello World";
 
-void testHandler(const std::shared_ptr<Session> session)
+void resourceHandler(const std::shared_ptr<Session> session)
 {
     session->close(OK, defaultAnswer, { {"Content-Length", std::to_string(defaultAnswer.length())} });
+}
+
+void defaultHandler(const std::shared_ptr<Session> session)
+{
+    std::stringstream ss;
+
+    ss << "ID :" << session->get_id() << std::endl;
+    ss << "Origen: " << session->get_origin() << std::endl;
+
+    string out = ss.str();
+
+    session->close(OK, out, { { "Content-Length", std::to_string(out.length()) } });
 }
 
 int main(int argc, char** argv)
@@ -33,7 +46,11 @@ int main(int argc, char** argv)
 
     auto resource = std::make_shared<Resource>();
     resource->set_path("/resource");
-    resource->set_method_handler("GET", testHandler);
+    resource->set_method_handler("GET", resourceHandler);
+
+    auto resource1 = std::make_shared<Resource>();
+    resource1->set_path("/");
+    resource1->set_method_handler("GET", defaultHandler);
 
     auto settings = std::make_shared<Settings>();
     settings->set_port(port);
@@ -43,6 +60,7 @@ int main(int argc, char** argv)
     Service service;
     service.set_logger(std::make_shared<ServerLogger>());
     service.publish(resource);
+    service.publish(resource1);
     service.start(settings);
 
     return EXIT_SUCCESS;
