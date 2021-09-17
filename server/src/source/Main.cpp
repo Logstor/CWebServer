@@ -20,11 +20,15 @@ void testHandler(const std::shared_ptr<Session> session)
 
 int main(int argc, char** argv)
 {
+    // Set default parameters
     ushort port = DEFAULTPORT;
 
-    if (argc == 3 && !strcmp("--port", argv[1]))
+    // Parse arguments
+    for(int i=1; i < argc; ++i)
     {
-        port = std::atoi(argv[2]);
+        if (!strcmp("--port", argv[i])) { port = atoi(argv[i]); }
+
+        else { std::cout << "Unknown Parameter: " << argv[i] << std::endl; }
     }
 
     auto resource = std::make_shared<Resource>();
