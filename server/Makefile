@@ -11,7 +11,7 @@ debug: clean makeDirs
 
 release: clean makeDirs
 	@echo Building for release ...
-	$(COMPILER) $(SRC) -o build/release/server -lrestbed $(RELEASEFLAGS)
+	$(COMPILER) $(SRC) -Isrc/headers/ -o build/release/server -lrestbed $(RELEASEFLAGS)
 
 makeDirs:
 	@mkdir -p build/release

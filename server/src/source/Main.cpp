@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 
     auto settings = std::make_shared<Settings>();
     settings->set_port(5073);
-    settings->set_bind_address("127.0.0.1");
+    settings->set_bind_address("0.0.0.0");
     settings->set_default_header("Connection", "close");
 
     Service service;
