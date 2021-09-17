@@ -10,4 +10,4 @@ WORKDIR /opt/server
 
 RUN make release
 
-CMD ./build/release/server --bind 0.0.0.0:$PORT
+CMD ./build/release/server --port $PORT

@@ -17,12 +17,20 @@ void testHandler(const std::shared_ptr<Session> session)
 
 int main(int argc, char** argv)
 {
+    if(argc < 3) 
+    {
+        std::cout << "Not enough arguments" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::cout << argv[0] << ", " << argv[1] << ", " << argv[2] << std::endl;
+
     auto resource = std::make_shared<Resource>();
     resource->set_path("/resource");
     resource->set_method_handler("GET", testHandler);
 
     auto settings = std::make_shared<Settings>();
-    settings->set_port(5073);
+    settings->set_port(std::atoi(argv[2]));
     settings->set_bind_address("0.0.0.0");
     settings->set_default_header("Connection", "close");
 
